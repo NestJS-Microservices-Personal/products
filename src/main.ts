@@ -24,8 +24,6 @@ async function bootstrap() {
     }),
   )
 
-  // app.setGlobalPrefix('api/v1')
-
   await app.listen();
   logger.log(`Products Microservice running on port ${envs.port}`)
 }
