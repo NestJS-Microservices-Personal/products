@@ -24,7 +24,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     const { page, limit } = paginationDto
 
     const totalPages = await this.product.count({
-      where:{available:true}
+      where:{available: true}
     })
     const lastPage = Math.ceil(totalPages / limit);
 
@@ -74,4 +74,22 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     })
     return productUpdate;
   }
+
+  async validateProducts(ids : string[]){
+    const products = await this.product.findMany({
+      where:{
+        id: { in: ids }
+      }
+    })
+
+    if ( products.length !== ids.length ){
+      throw new RpcException ({
+        message: `Some Product were not found`,
+        status: HttpStatus.BAD_REQUEST
+      })
+    }
+ 
+    return products
+  }
+
 }
